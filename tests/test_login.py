@@ -45,3 +45,4 @@ def test_login_wrong_userName(driver):
     login_page.enter_password(PASSWORD)
     login_page.click_login_button()
     assert login_page.check_error_message_showed() == True
+# TODO: asset to make the page clear the text input

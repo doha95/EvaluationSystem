@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from pageObject.EvaluationHistoryPage import EvaluationHistoryPage
+from pageObject.MyEvaluationPage import MyEvaluationPage
 from pageObject.common.BaseModule import BaseModule
 from selenium.common.exceptions import TimeoutException
 
@@ -16,7 +17,7 @@ class HomePage(BaseModule):
         By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li.nav-item.active > a")
 
     __user_option_dropdown_locator = (By.CSS_SELECTOR,
-                                    "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1)")
+                                      "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1)")
     __logout_button_locator = (By.CSS_SELECTOR,
                                "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1) > ul > li > a")
 
@@ -28,9 +29,12 @@ class HomePage(BaseModule):
             return False
 
     def open_my_evaluation_page(self):
-        my_evaluation_tab = self.wait_for(self.__my_evaluation_tab_locator)
-        my_evaluation_tab.click()
-        # TODO: return MyEvaluationPage
+        try:
+            my_evaluation_tab = self.wait_for(self.__my_evaluation_tab_locator)
+            my_evaluation_tab.click()
+            return MyEvaluationPage(self.driver)
+        except TimeoutException:
+            return None
 
     def open_evaluation_history_page(self):
         try:
