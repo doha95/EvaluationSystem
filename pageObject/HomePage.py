@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+
+from pageObject.EvaluationHistoryPage import EvaluationHistoryPage
 from pageObject.common.BaseModule import BaseModule
 from selenium.common.exceptions import TimeoutException
 
@@ -13,6 +15,11 @@ class HomePage(BaseModule):
     __my_evaluation_tab_locator = (
         By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li.nav-item.active > a")
 
+    __user_option_dropdown_locator = (By.CSS_SELECTOR,
+                                    "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1)")
+    __logout_button_locator = (By.CSS_SELECTOR,
+                               "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1) > ul > li > a")
+
     def check_home_page_is_loaded(self):
         try:
             title = self.wait_for(self.__home_title_locator).text
@@ -26,6 +33,18 @@ class HomePage(BaseModule):
         # TODO: return MyEvaluationPage
 
     def open_evaluation_history_page(self):
-        evaluation_history_tab = self.wait_for(self.__evaluation_history_tab_locator)
-        evaluation_history_tab.click()
-        # TODO: return EvaluationHistoryPage
+        try:
+            evaluation_history_tab = self.wait_for(self.__evaluation_history_tab_locator)
+            evaluation_history_tab.click()
+            return EvaluationHistoryPage(self.driver)
+        except TimeoutException:
+            return None
+
+    def click_logout(self):
+        try:
+            drop_down_element = self.wait_for(self.__user_option_dropdown_locator)
+            drop_down_element.click()
+            logout_button = self.wait_for(self.__logout_button_locator)
+            logout_button.click()
+        except TimeoutException:
+            return None
