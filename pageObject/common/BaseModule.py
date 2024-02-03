@@ -14,3 +14,5 @@ class BaseModule(object):
     def find_element(self, locator):
         return self.driver.find_element(*locator)
 
+    def find_multi_elements(self, locator):
+        return self.driver.find_elements(*locator)

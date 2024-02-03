@@ -4,6 +4,7 @@ from pageObject.EvaluationHistoryPage import EvaluationHistoryPage
 from pageObject.MyEvaluationPage import MyEvaluationPage
 from pageObject.common.BaseModule import BaseModule
 from selenium.common.exceptions import TimeoutException
+from pageObject.SupervisorTeamEvaluationPage import SupervisorTeamEvaluationPage
 
 
 class HomePage(BaseModule):
@@ -12,14 +13,18 @@ class HomePage(BaseModule):
     __home_title_locator = (
         By.CSS_SELECTOR, "body > div.page-header.navbar.navbar-fixed-top > div > h4.text-white.text-3xl.pl-5")
     __evaluation_history_tab_locator = (
-        By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li.nav-item.active > a")
+        By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul >  li:nth-child(3)")
     __my_evaluation_tab_locator = (
-        By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li.nav-item.active > a")
+        By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li:nth-child(2)")
 
     __user_option_dropdown_locator = (By.CSS_SELECTOR,
                                       "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1)")
     __logout_button_locator = (By.CSS_SELECTOR,
                                "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1) > ul > li > a")
+
+    # supervisor locators only
+    __supervisor_team_tab_locator = (
+        By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li:nth-child(4)")
 
     def check_home_page_is_loaded(self):
         try:
@@ -41,6 +46,14 @@ class HomePage(BaseModule):
             evaluation_history_tab = self.wait_for(self.__evaluation_history_tab_locator)
             evaluation_history_tab.click()
             return EvaluationHistoryPage(self.driver)
+        except TimeoutException:
+            return None
+
+    def open_supervisor_evaluation_team_page(self):
+        try:
+            supervisor_team_tab = self.wait_for(self.__supervisor_team_tab_locator)
+            supervisor_team_tab.click()
+            return SupervisorTeamEvaluationPage(self.driver)
         except TimeoutException:
             return None
 
