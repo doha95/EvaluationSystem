@@ -26,6 +26,7 @@ class HomePage(BaseModule):
     # supervisor locators only
     __supervisor_team_tab_locator = (
         By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li:nth-child(4)")
+    current_evaluation_cycle_date = ""
 
     def check_home_page_is_loaded(self):
         try:
@@ -38,7 +39,9 @@ class HomePage(BaseModule):
         try:
             my_evaluation_tab = self.wait_for(self.__my_evaluation_tab_locator)
             my_evaluation_tab.click()
-            return EmployeeEvaluationPage(self.driver)
+            employeeEvaluationPage = EmployeeEvaluationPage(self.driver)
+            self.current_evaluation_cycle_date = employeeEvaluationPage.get_current_evaluation_cycle()
+            return employeeEvaluationPage
         except TimeoutException:
             return None
 

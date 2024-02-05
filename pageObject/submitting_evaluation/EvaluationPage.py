@@ -28,6 +28,8 @@ class EvaluationPage(BaseModule):
     __closed_date_locator = (By.CSS_SELECTOR,
                              "body > div.page-container > div.page-content-wrapper > div > "
                              "div.m-heading-1.border-green.m-bordered > div > div.col-md-2 > h3:nth-child(5)")
+    __evaluation_cycle_date_locator = (By.CSS_SELECTOR,
+                                       "body > div.page-container > div.page-content-wrapper > div > div.m-heading-1.border-green.m-bordered > div > div.col-md-10 > div:nth-child(1) > div:nth-child(2) > h3")
     __evaluation_table_locator = (By.CSS_SELECTOR, '#assets-data-table > tbody')
     __submit_button_locator = (By.ID, "submitbtn")
     __save_button_locator = (By.ID, "saveButton")
@@ -129,4 +131,9 @@ class EvaluationPage(BaseModule):
             return False
 
     def get_current_evaluation_cycle(self):
-        
+        try:
+            current_evaluation_cycle = self.wait_for(self.__evaluation_cycle_date_locator)
+            CYCLE_TITLE = "Evaluation Cycle : "
+            return current_evaluation_cycle.text.replace(CYCLE_TITLE, "")
+        except TimeoutException:
+            return None

@@ -17,6 +17,7 @@ Supervisor_PASSWORD = "45622"
 @pytest.fixture(scope="module")
 def driver():
     # TODO: handle to create it in singleton
+    sizes = [(320, 480), (768, 1024), (1440, 900)]  # Different screen sizes to test
     options = webdriver.ChromeOptions()
     web_driver = webdriver.Chrome(options=options)
     web_driver.maximize_window()
