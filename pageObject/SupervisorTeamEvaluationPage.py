@@ -1,6 +1,7 @@
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from pageObject.common.BaseModule import BaseModule
+from pageObject.submitting_evaluation.SupervisorEvaluationPage import SupervisorEvaluationPage
 
 
 class SupervisorTeamEvaluationPage(BaseModule):
@@ -11,7 +12,11 @@ class SupervisorTeamEvaluationPage(BaseModule):
     __cancel_evaluation_button_locator = (By.ID, "cancel")
 
     def click_open_evaluation_button(self):
-        self.wait_for(self.__open_evaluation_button_locator).click()
+        try:
+            self.wait_for(self.__open_evaluation_button_locator).click()
+            return SupervisorEvaluationPage(self.driver)
+        except TimeoutException:
+            return None
 
     def click_history_evaluation_button(self):
         self.wait_for(self.__history_evaluation_button_locator).click()

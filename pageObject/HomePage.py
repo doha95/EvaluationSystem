@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
 
 from pageObject.EvaluationHistoryPage import EvaluationHistoryPage
-from pageObject.MyEvaluationPage import MyEvaluationPage
+from pageObject.submitting_evaluation.SupervisorEvaluationPage import SupervisorEvaluationPage
+from pageObject.submitting_evaluation.EmployeeEvaluationPage import EmployeeEvaluationPage
 from pageObject.common.BaseModule import BaseModule
 from selenium.common.exceptions import TimeoutException
 from pageObject.SupervisorTeamEvaluationPage import SupervisorTeamEvaluationPage
@@ -33,19 +34,11 @@ class HomePage(BaseModule):
         except TimeoutException:
             return False
 
-    def open_my_evaluation_page(self):
+    def open_employee_evaluation_page(self):
         try:
             my_evaluation_tab = self.wait_for(self.__my_evaluation_tab_locator)
             my_evaluation_tab.click()
-            return MyEvaluationPage(self.driver)
-        except TimeoutException:
-            return None
-
-    def open_evaluation_history_page(self):
-        try:
-            evaluation_history_tab = self.wait_for(self.__evaluation_history_tab_locator)
-            evaluation_history_tab.click()
-            return EvaluationHistoryPage(self.driver)
+            return EmployeeEvaluationPage(self.driver)
         except TimeoutException:
             return None
 
@@ -54,6 +47,14 @@ class HomePage(BaseModule):
             supervisor_team_tab = self.wait_for(self.__supervisor_team_tab_locator)
             supervisor_team_tab.click()
             return SupervisorTeamEvaluationPage(self.driver)
+        except TimeoutException:
+            return None
+
+    def open_evaluation_history_page(self):
+        try:
+            evaluation_history_tab = self.wait_for(self.__evaluation_history_tab_locator)
+            evaluation_history_tab.click()
+            return EvaluationHistoryPage(self.driver)
         except TimeoutException:
             return None
 

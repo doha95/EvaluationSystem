@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from pageObject.common.BaseModule import BaseModule
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 image_started = "../img/starteval.gif"
 
@@ -53,8 +53,21 @@ class EvaluationPage(BaseModule):
                 selected_cell = cells[selectedRatingIndex]
                 checkbox = selected_cell.find_element(By.TAG_NAME, "input")
                 checkbox.click()
-        except TimeoutException:
+        except (TimeoutException, NoSuchElementException):
             return None
+
+    # TODO: handle it in better way to fill the table, maybe to fill with out index
+    # this is dummy way to check
+    def is_evaluation_saved(self):
+        try:
+            status_image_element = self.wait_for(self.__evaluation_status_image_locator)
+            image_src = status_image_element.get_attribute("src")
+            if "/img/starteval.gif" in image_src:
+                return True
+            else:
+                return False
+        except (TimeoutException, NoSuchElementException):
+            return False
 
     def click_save_button(self):
         try:
@@ -114,3 +127,6 @@ class EvaluationPage(BaseModule):
             return True if "N/A" not in close_submission_date.text else False
         except TimeoutException:
             return False
+
+    def get_current_evaluation_cycle(self):
+        

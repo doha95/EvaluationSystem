@@ -1,4 +1,4 @@
-import EvaluationPage
+from pageObject.submitting_evaluation.EvaluationPage import EvaluationPage
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 
@@ -31,7 +31,7 @@ class SupervisorEvaluationPage(EvaluationPage):
         except TimeoutException:
             return None
 
-    def click_confirm_submit(self):
+    def click_confirm_review_submit(self):
         try:
             submit_button = self.wait_for(self.__confirm_button_locator)
             submit_button.click()
@@ -44,3 +44,8 @@ class SupervisorEvaluationPage(EvaluationPage):
             cancel_button.click()
         except TimeoutException:
             return None
+
+    def set_supervisor_evaluation_info_with_dictionary(self, dictionary_data):
+        self.fill_evaluation_table(dictionary_data["evaluationSelectionIndex"])
+        self.set_improvements_text(dictionary_data["improvementsText"])
+        self.set_strengths_text(dictionary_data["strengthsText"])

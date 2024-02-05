@@ -27,7 +27,6 @@ def driver():
 @pytest.fixture
 def login_with_employee(driver):
     login_page = LoginPage(driver=driver)
-    login_page.open_login_page(loginURL=URL)
     # TODO: change it into JSON data with the users
     login_page.login_with_userName_and_password(URL, EMPLOYEE_USER_NAME, EMPLOYEE_PASSWORD)
     # TODO: test the login by the userName

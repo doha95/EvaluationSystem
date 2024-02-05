@@ -1,6 +1,7 @@
-import EvaluationPage
+# import EvaluationPage
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from pageObject.submitting_evaluation.EvaluationPage import EvaluationPage
 
 
 class EmployeeEvaluationPage(EvaluationPage):
@@ -35,3 +36,9 @@ class EmployeeEvaluationPage(EvaluationPage):
             cancel_button.click()
         except TimeoutException:
             return None
+
+    def set_evaluation_page_with_dictionary(self, dictionary_data):
+        self.fill_evaluation_table(dictionary_data["evaluationSelectionIndex"])
+        self.set_likes_text(dictionary_data["likesText"])
+        self.set_dislikes_text(dictionary_data["dislikesText"])
+        self.set_improvements_text(dictionary_data["improvementsText"])
