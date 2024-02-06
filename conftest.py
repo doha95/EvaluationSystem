@@ -1,20 +1,16 @@
 import pytest
 from selenium import webdriver
+# from pageObject.LoginPage import LoginPage
 from pageObject.LoginPage import LoginPage
 import json
-from enum import Enum
-
-
-class CredentialKeysEnum(Enum):
-    USER_NAME = 'userName'
-    PASSWORD = 'password'
-    USER_FULL_NAME = 'userFullName'
+from utills.Contants import CredentialKeysEnum
 
 
 @pytest.fixture(scope="session")
 def config():
     try:
-        with open("config.json", "r") as f:
+        # TODO: fix json path
+        with open("/Users/dtubaileh/PycharmProjects/EvaluationSystem/config.json", "r") as f:
             return json.load(f)
     except FileNotFoundError:
         print("The JSON file was not found.")
@@ -49,7 +45,7 @@ def employee_credentials(config):
 
 
 # TODO: handle how we should manage scope the driver
-@pytest.fixture(scope="module")
+@pytest.fixture#(scope="module")
 def driver():
     # TODO: handle to create it in singleton
     sizes = [(320, 480), (768, 1024), (1440, 900)]  # Different screen sizes to test
@@ -63,18 +59,14 @@ def driver():
 @pytest.fixture
 def login_with_employee(driver, base_url, employee_credentials):
     login_page = LoginPage(driver=driver)
-    # TODO: change it into JSON data with the users
     user_name = employee_credentials[CredentialKeysEnum.USER_NAME.value]
     password = employee_credentials[CredentialKeysEnum.PASSWORD.value]
     login_page.login_with_userName_and_password(base_url, user_name, password)
-    # TODO: test the login by the userName
 
 
 @pytest.fixture
-def login_with_supervisor(driver,base_url,supervisor_credentials):
+def login_with_supervisor(driver, base_url, supervisor_credentials):
     login_page = LoginPage(driver=driver)
-    # TODO: change it into JSON data with the users
     user_name = supervisor_credentials[CredentialKeysEnum.USER_NAME.value]
     password = supervisor_credentials[CredentialKeysEnum.PASSWORD.value]
     login_page.login_with_userName_and_password(base_url, user_name, password)
-    # TODO: test the login by the userName

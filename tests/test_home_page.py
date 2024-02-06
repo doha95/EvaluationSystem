@@ -1,9 +1,7 @@
-import time
 import pytest
 
 from pageObject.HomePage import HomePage
-from tests.conftest import driver, login_with_employee, login_with_supervisor
-from pageObject.submitting_evaluation.EmployeeEvaluationPage import EmployeeEvaluationPage
+from conftest import driver, login_with_employee, login_with_supervisor
 from utills.DateProcess import is_ordered_by_date
 import allure
 
