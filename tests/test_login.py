@@ -21,7 +21,7 @@ def test_login_with_employee(driver, employee_credentials, login_with_employee):
 
 @allure.feature("Authentication features")
 @allure.title("Test Login With Supervisor Account")
-# @pytest.mark.dependency()
+@pytest.mark.dependency()
 def test_login_with_supervisor(driver, supervisor_credentials, login_with_supervisor):
     home_page = HomePage(driver=driver)
     user_name = supervisor_credentials[CredentialKeysEnum.USER_FULL_NAME.value]

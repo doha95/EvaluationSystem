@@ -1,6 +1,5 @@
 import pytest
 from selenium import webdriver
-# from pageObject.LoginPage import LoginPage
 from pageObject.LoginPage import LoginPage
 import json
 from utills.Contants import CredentialKeysEnum

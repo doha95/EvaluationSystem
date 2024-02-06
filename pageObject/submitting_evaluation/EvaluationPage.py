@@ -23,17 +23,23 @@ class EvaluationPage(BaseModule):
                                         "div.m-heading-1.border-green.m-bordered > div > div.col-md-2 > h3:nth-child("
                                         "3)")
     __review_date_locator = (By.CSS_SELECTOR,
-                             "body > div.page-container > div.page-content-wrapper > div > "
-                             "div.m-heading-1.border-green.m-bordered > div > div.col-md-2 > h3:nth-child(4)")
+                             "body > div.page-container > div.page-content-wrapper > div > div.m-heading-1.border-green.m-bordered > div > div.col-md-2 > h3:nth-child(4)")
     __closed_date_locator = (By.CSS_SELECTOR,
                              "body > div.page-container > div.page-content-wrapper > div > "
                              "div.m-heading-1.border-green.m-bordered > div > div.col-md-2 > h3:nth-child(5)")
     __evaluation_cycle_date_locator = (By.CSS_SELECTOR,
                                        "body > div.page-container > div.page-content-wrapper > div > div.m-heading-1.border-green.m-bordered > div > div.col-md-10 > div:nth-child(1) > div:nth-child(2) > h3")
+    __confirm_submit_button_locator = (By.CSS_SELECTOR,
+                                       'body > div.bootbox.modal.fade.bootbox-confirm.in > div > div > div.modal-footer > button.btn.btn-primary')
+    __cancel_submit_button_locator = (By.CSS_SELECTOR,
+                                      'body > div.bootbox.modal.fade.bootbox-confirm.in > div > div > div.modal-footer > button.btn.btn-default')
+
     __evaluation_table_locator = (By.CSS_SELECTOR, '#assets-data-table > tbody')
     __submit_button_locator = (By.ID, "submitbtn")
     __save_button_locator = (By.ID, "saveButton")
     __close_evaluation_button_locator = (By.ID, "CLOSEbtn")
+    __confirm_close_evaluation_button_locator = (By.ID, "save")
+    __cancel_close_evaluation_button_locator = (By.ID, "close")
 
     def check_my_history_page_is_loaded(self):
         try:
@@ -92,6 +98,20 @@ class EvaluationPage(BaseModule):
         except TimeoutException:
             return False
 
+    def click_confirm_submit(self):
+        try:
+            submit_button = self.wait_for(self.__confirm_submit_button_locator)
+            submit_button.click()
+        except TimeoutException:
+            return None
+
+    def click_cancel_submit(self):
+        try:
+            cancel_button = self.wait_for(self.__cancel_submit_button_locator)
+            cancel_button.click()
+        except TimeoutException:
+            return None
+
     def click_close_evaluation_button(self):
         try:
             close_button = self.wait_for(self.__close_evaluation_button_locator)
@@ -135,5 +155,20 @@ class EvaluationPage(BaseModule):
             current_evaluation_cycle = self.wait_for(self.__evaluation_cycle_date_locator)
             CYCLE_TITLE = "Evaluation Cycle : "
             return current_evaluation_cycle.text.replace(CYCLE_TITLE, "")
+        except TimeoutException:
+            return None
+
+    def click_confirm_close_review_submit(self):
+        try:
+            self.wait_for((By.ID, "closefrm"))
+            submit_button = self.wait_for(self.__confirm_close_evaluation_button_locator)
+            submit_button.click()
+        except TimeoutException:
+            return None
+
+    def click_cancel_close_submit(self):
+        try:
+            cancel_button = self.wait_for(self.__cancel_close_evaluation_button_locator)
+            cancel_button.click()
         except TimeoutException:
             return None
