@@ -11,6 +11,10 @@ class BaseModule(object):
         element = self.wait.until(EC.presence_of_element_located(locator))
         return element
 
+    def wait_for_url(self, url_string):
+        element = self.wait.until(EC.url_to_be(url_string))
+        return element
+
     def find_element(self, locator):
         return self.driver.find_element(*locator)
 

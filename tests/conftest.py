@@ -1,19 +1,54 @@
 import pytest
 from selenium import webdriver
-
 from pageObject.LoginPage import LoginPage
-
-# TODO: handle to put it into a file
-URL = "http://172.22.1.141:8089/"
-EMPLOYEE_USER_NAME = "test-employee5"
-EMPLOYEE_PASSWORD = "45622"
-
-Supervisor_USER_NAME = "test-supervisor4"
-Supervisor_PASSWORD = "45622"
+import json
+from enum import Enum
 
 
-# TODO: handle this driver how to make it
-# @pytest.fixture()#scope="session"  scope="class" scope="module"
+class CredentialKeysEnum(Enum):
+    USER_NAME = 'userName'
+    PASSWORD = 'password'
+    USER_FULL_NAME = 'userFullName'
+
+
+@pytest.fixture(scope="session")
+def config():
+    try:
+        with open("config.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("The JSON file was not found.")
+    except json.JSONDecodeError:
+        print("The JSON file contains invalid JSON data.")
+    except Exception as error:
+        print(f"An error occurred while reading the JSON file: {error}")
+
+
+@pytest.fixture(scope="session")
+def base_url(config):
+    try:
+        return config["url"]
+    except Exception as error:
+        print(f"An error occurred while reading the JSON file: {error}")
+
+
+@pytest.fixture(scope="session")
+def supervisor_credentials(config):
+    try:
+        return config["supervisor_credentials"]
+    except Exception as error:
+        print(f"An error occurred while reading the JSON file: {error}")
+
+
+@pytest.fixture(scope="session")
+def employee_credentials(config):
+    try:
+        return config["employee_credentials"]
+    except Exception as error:
+        print(f"An error occurred while reading the JSON file: {error}")
+
+
+# TODO: handle how we should manage scope the driver
 @pytest.fixture(scope="module")
 def driver():
     # TODO: handle to create it in singleton
@@ -26,16 +61,20 @@ def driver():
 
 
 @pytest.fixture
-def login_with_employee(driver):
+def login_with_employee(driver, base_url, employee_credentials):
     login_page = LoginPage(driver=driver)
     # TODO: change it into JSON data with the users
-    login_page.login_with_userName_and_password(URL, EMPLOYEE_USER_NAME, EMPLOYEE_PASSWORD)
+    user_name = employee_credentials[CredentialKeysEnum.USER_NAME.value]
+    password = employee_credentials[CredentialKeysEnum.PASSWORD.value]
+    login_page.login_with_userName_and_password(base_url, user_name, password)
     # TODO: test the login by the userName
 
 
 @pytest.fixture
-def login_with_supervisor(driver):
+def login_with_supervisor(driver,base_url,supervisor_credentials):
     login_page = LoginPage(driver=driver)
     # TODO: change it into JSON data with the users
-    login_page.login_with_userName_and_password(URL, Supervisor_USER_NAME, Supervisor_PASSWORD)
+    user_name = supervisor_credentials[CredentialKeysEnum.USER_NAME.value]
+    password = supervisor_credentials[CredentialKeysEnum.PASSWORD.value]
+    login_page.login_with_userName_and_password(base_url, user_name, password)
     # TODO: test the login by the userName

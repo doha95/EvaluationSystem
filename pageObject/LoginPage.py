@@ -22,7 +22,7 @@ class LoginPage(BaseModule):
         password_input = self.wait_for(self.__password_locator)
         password_input.send_keys(password)
 
-    def login_with_userName_and_password(self,url, username, password):
+    def login_with_userName_and_password(self, url, username, password):
         self.open_login_page(url)
         self.enter_username(username)
         self.enter_password(password)
@@ -38,3 +38,7 @@ class LoginPage(BaseModule):
             return error_message_element.is_displayed()
         except TimeoutException:
             return False
+
+    def check_login_url(self, url):
+        self.wait_for_url(url)
+        return True if self.driver.current_url == url else False

@@ -22,16 +22,16 @@ class HomePage(BaseModule):
                                       "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1)")
     __logout_button_locator = (By.CSS_SELECTOR,
                                "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1) > ul > li > a")
-
+    __current_user_name_locator = (By.CSS_SELECTOR, "body > div.page-header.navbar.navbar-fixed-top > div > div.top-menu.justify-self-end > ul > li:nth-child(1) > a > span")
     # supervisor locators only
     __supervisor_team_tab_locator = (
         By.CSS_SELECTOR, "body > div.page-container > div.page-sidebar-wrapper > div > ul > li:nth-child(4)")
     current_evaluation_cycle_date = ""
 
-    def check_home_page_is_loaded(self):
+    def check_home_page_is_loaded_with_userName(self,userName):
         try:
-            title = self.wait_for(self.__home_title_locator).text
-            return title == self.__TITLE_NAME
+            login_name = self.wait_for(self.__current_user_name_locator).text
+            return userName in login_name
         except TimeoutException:
             return False
 

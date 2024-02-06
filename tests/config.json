@@ -1,0 +1,13 @@
+{
+  "url": "http://172.22.1.141:8089/",
+  "supervisor_credentials": {
+    "userName": "test-supervisor4",
+    "password": "45622",
+    "userFullName": "test supervisor4"
+  },
+  "employee_credentials": {
+    "userName": "test-employee5",
+    "password": "45622",
+    "userFullName": "test employee5"
+  }
+}
