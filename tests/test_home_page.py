@@ -10,14 +10,14 @@ import allure
 
 # TODO: put it in a separate file
 employee_evaluation_data = {
-    "evaluationSelectionIndex": 2,
+    "evaluationSelectionIndex": 1,
     "dislikesText": "dislikes_text",
     "likesText": "likes_text",
     "improvementsText": "improvements_text",
 }
 
 supervisor_evaluation_data = {
-    "evaluationSelectionIndex": 1,
+    "evaluationSelectionIndex": 3,
     "improvementsText": "improvements_text",
     "strengthsText": "strengths_text",
 }

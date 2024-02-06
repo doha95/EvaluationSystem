@@ -8,7 +8,7 @@ class BaseModule(object):
         self.wait = WebDriverWait(driver, 5)
 
     def wait_for(self, locator):
-        element = self.wait.until(EC.presence_of_element_located(locator))
+        element = self.wait.until(EC.visibility_of_element_located(locator))
         return element
 
     def wait_for_url(self, url_string):
