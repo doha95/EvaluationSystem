@@ -10,14 +10,14 @@ import allure
 
 # TODO: put it in a separate file
 employee_evaluation_data = {
-    "evaluationSelectionIndex": 4,
+    "evaluationSelectionIndex": 2,
     "dislikesText": "dislikes_text",
     "likesText": "likes_text",
     "improvementsText": "improvements_text",
 }
 
 supervisor_evaluation_data = {
-    "evaluationSelectionIndex": 4,
+    "evaluationSelectionIndex": 1,
     "improvementsText": "improvements_text",
     "strengthsText": "strengths_text",
 }
@@ -25,14 +25,13 @@ supervisor_evaluation_data = {
 
 @allure.feature("Home Page features")
 @allure.title("Test User Can Tab My Evaluation ")
-@pytest.mark.dependency(depends=["test_login_with_employee"])
 def test_select_my_evaluation(driver, login_with_employee):
     home_page = HomePage(driver=driver)
     my_evaluation_page = home_page.open_employee_evaluation_page()
     assert my_evaluation_page.check_my_history_page_is_loaded() == True
 
 
-@allure.feature("Employee Evaluation features")
+@allure.feature("Evaluation features")
 @allure.title("Test employee Can fill the evaluation form")
 @pytest.mark.dependency()
 def test_employee_filling_evaluation_from(driver, login_with_employee):
@@ -49,9 +48,8 @@ def test_employee_filling_evaluation_from(driver, login_with_employee):
     assert employee_evaluation_page.check_employee_submission_date_is_located() == True
 
 
-@allure.feature("Supervisor Evaluation features")
+@allure.feature("Evaluation features")
 @allure.title("Test Supervisor Can fill and submit the evaluation form")
-# TODO: is it the pest way? maybe we should added it as step in pytest
 @pytest.mark.dependency(depends=["test_employee_filling_evaluation_from"])
 def test_supervisor_submit_evaluation_from(driver, login_with_supervisor):
     home_page = HomePage(driver=driver)
@@ -65,9 +63,8 @@ def test_supervisor_submit_evaluation_from(driver, login_with_supervisor):
     assert supervisor_evaluation_page.check_supervisor_submission_date_is_located()
 
 
-@allure.feature("Supervisor Evaluation features")
+@allure.feature("Evaluation features")
 @allure.title("Test Supervisor Close the evaluation form")
-# TODO: is it the pest way? maybe we should added it as step in pytest
 @pytest.mark.dependency(depends=["test_supervisor_submit_evaluation_from"])
 def test_supervisor_closing_evaluation_from(driver, login_with_supervisor):
     home_page = HomePage(driver=driver)
@@ -78,7 +75,7 @@ def test_supervisor_closing_evaluation_from(driver, login_with_supervisor):
     assert supervisor_evaluation_page.check_review_submission_date_is_located()
 
 
-@allure.feature("Employee Evaluation features")
+@allure.feature("Evaluation features")
 @allure.title("Test employee Can close evaluation")
 @pytest.mark.dependency(depends=["test_supervisor_closing_evaluation_from"])
 def test_employee_closing_evaluation(driver, login_with_employee):
@@ -95,7 +92,7 @@ def test_employee_closing_evaluation(driver, login_with_employee):
 def test_select_evaluation_history(driver, login_with_employee):
     home_page = HomePage(driver=driver)
     evaluation_history_page = home_page.open_evaluation_history_page()
-    assert evaluation_history_page.check_history_page_is_loaded() == True
+    assert evaluation_history_page.check_history_page_is_loaded()
 
 
 @allure.feature("Evaluation History features")

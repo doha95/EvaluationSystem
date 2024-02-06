@@ -100,7 +100,7 @@ class EvaluationPage(BaseModule):
 
     def click_confirm_submit(self):
         try:
-            submit_button = self.wait_for(self.__confirm_submit_button_locator)
+            submit_button = self.wait_for_visibility_of_element_located(self.__confirm_submit_button_locator)
             submit_button.click()
         except TimeoutException:
             return None
@@ -160,8 +160,7 @@ class EvaluationPage(BaseModule):
 
     def click_confirm_close_review_submit(self):
         try:
-            self.wait_for((By.ID, "closefrm"))
-            submit_button = self.wait_for(self.__confirm_close_evaluation_button_locator)
+            submit_button = self.wait_for_visibility_of_element_located(self.__confirm_close_evaluation_button_locator)
             submit_button.click()
         except TimeoutException:
             return None
