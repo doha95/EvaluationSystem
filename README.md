@@ -24,7 +24,7 @@ To access the web application, use the provided testing accounts located in the 
 2. `test`: Contains the test scenarios for the evaluation system.
 3. `conftest`: Houses configuration fixtures required for the project.
 
-## Pending TODO:
+## What New:
 1. generate different screen sizes for each session.
 2. put the selected browser in the JSON file, so it can run the desired browser.
 3. find a way to open the evaluation for each session, currently the web having an issue.
