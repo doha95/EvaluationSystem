@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from pageObject.submitting_evaluation.EvaluationPage import EvaluationPage
 from utills.StringProcess import remove_special_characters_and_spaces
+from utills.EvaluationRatingGenerator import EmployeeEvaluationRatingGenerator, SupervisorEvaluationRatingGenerator
 
 
 class EmployeeEvaluationPage(EvaluationPage):
@@ -44,18 +45,17 @@ class EmployeeEvaluationPage(EvaluationPage):
         improvement = self.wait_for(self.__improvements_text_area_locator)
         return improvement.text
 
-    def set_evaluation_page_with_dictionary(self, dictionary_data):
-        self.fill_evaluation_table(dictionary_data["evaluationSelections"])
-        self.set_likes_text(dictionary_data["likesText"])
-        self.set_dislikes_text(dictionary_data["dislikesText"])
-        self.set_improvements_text(dictionary_data["improvementsText"])
+    def set_evaluation_page_with_generated_data(self, generated_data=EmployeeEvaluationRatingGenerator()):
+        self.fill_evaluation_table(generated_data.evaluationSelections)
+        self.set_likes_text(generated_data.likesText)
+        self.set_dislikes_text(generated_data.dislikesText)
+        self.set_improvements_text(generated_data.improvementsText)
 
-    def is_evaluation_page_saved_with_dictionary_info(self, dictionary_data):
-        table_result = self.is_evaluation_table_saved(dictionary_data["evaluationSelections"])
-        isLikesSaved = self.get_likes_text() == dictionary_data["likesText"]
-        isDisLikesSaved = self.get_dislikes_text() == dictionary_data["dislikesText"]
-        isImprovementsSaved = self.get_improvements_text() == dictionary_data["improvementsText"]
-
+    def is_evaluation_page_saved_with_generated_data(self, generated_data=EmployeeEvaluationRatingGenerator()):
+        table_result = self.is_evaluation_table_saved(generated_data.evaluationSelections)
+        isLikesSaved = self.get_likes_text() == generated_data.likesText
+        isDisLikesSaved = self.get_dislikes_text() == generated_data.dislikesText
+        isImprovementsSaved = self.get_improvements_text() == generated_data.improvementsText
         return table_result and isLikesSaved and isDisLikesSaved and isImprovementsSaved
 
     def is_evaluation_table_saved_After_submission(self, evaluationSelections):
@@ -76,13 +76,12 @@ class EmployeeEvaluationPage(EvaluationPage):
             return None
 
     # TODO: refactor it
-    def is_evaluation_page_submited_with_dictionary_info(self, dictionary_data):
-        table_result = self.is_evaluation_table_saved_After_submission(dictionary_data["evaluationSelections"])
-        isLikesSaved = self.wait_for(self.__likes_textarea_after_submission_locator).text == dictionary_data[
-            "likesText"]
-        isDisLikesSaved = self.wait_for(self.__dislikes_textarea_after_submission_locator).text == dictionary_data[
-            "dislikesText"]
-        isImprovementsSaved = self.wait_for(self.__improvements_textarea_after_submission_locator).text == \
-                              dictionary_data["improvementsText"]
+    def is_evaluation_page_submited_with_generated_data(self, generated_data=EmployeeEvaluationRatingGenerator()):
+        table_result = self.is_evaluation_table_saved_After_submission(generated_data.evaluationSelections)
+        isLikesSaved = self.wait_for(self.__likes_textarea_after_submission_locator).text == generated_data.likesText
+        isDisLikesSaved = self.wait_for(
+            self.__dislikes_textarea_after_submission_locator).text == generated_data.dislikesText
+        isImprovementsSaved = self.wait_for(
+            self.__improvements_textarea_after_submission_locator).text == generated_data.improvementsText
 
         return table_result and isLikesSaved and isDisLikesSaved and isImprovementsSaved

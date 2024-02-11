@@ -1,6 +1,7 @@
 from pageObject.submitting_evaluation.EvaluationPage import EvaluationPage
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from utills.EvaluationRatingGenerator import SupervisorEvaluationRatingGenerator
 
 
 class SupervisorEvaluationPage(EvaluationPage):
@@ -47,14 +48,15 @@ class SupervisorEvaluationPage(EvaluationPage):
         except TimeoutException:
             return None
 
-    def set_supervisor_evaluation_info_with_dictionary(self, dictionary_data):
-        self.fill_evaluation_table(dictionary_data["evaluationSelectionIndex"])
-        self.set_improvements_text(dictionary_data["improvementsText"])
-        self.set_strengths_text(dictionary_data["strengthsText"])
+    def set_supervisor_evaluation_info_with_generated_info(self, generated_info=SupervisorEvaluationRatingGenerator()):
+        self.fill_evaluation_table(generated_info.evaluationSelections)
+        self.set_improvements_text(generated_info.improvementsText)
+        self.set_strengths_text(generated_info.strengthsText)
 
-    def is_supervisor_evaluation_page_saved_with_dictionary_info(self, dictionary_data):
-        table_result = self.is_evaluation_table_saved(dictionary_data["evaluationSelections"])
-        isStrengthsText = self.get_strengths_text() == dictionary_data["strengthsText"]
-        isImprovementsText = self.get_improvements_text() == dictionary_data["improvementsText"]
+    def is_supervisor_evaluation_page_saved_with_generated_info(self,
+                                                                generated_info=SupervisorEvaluationRatingGenerator()):
+        table_result = self.is_evaluation_table_saved(generated_info.evaluationSelections)
+        isStrengthsText = self.get_strengths_text() == generated_info.strengthsText
+        isImprovementsText = self.get_improvements_text() == generated_info.improvementsText
 
         return table_result and isImprovementsText and isStrengthsText

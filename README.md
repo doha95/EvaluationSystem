@@ -43,7 +43,5 @@ for example: changing the status for the evaluation cycle from `closed` to `open
 1. Export the dependency's into `requirements.txt`.
 2. Adding automation code for opening the evaluation cycle from the HR Account,
  **blocked by the limitation point above**.
-3. put the selected browser in the JSON file, so it can run the desired browser.
-4. find a way to open the evaluation for each session, currently the web having an issue.
-5. adding more testing scenarios.
-6. code refactoring.
+3. adding more testing scenarios.
+4. code refactoring.
