@@ -9,5 +9,10 @@
     "userName": "test-employee5",
     "password": "45622",
     "userFullName": "test employee5"
+  },
+  "hr_credentials": {
+    "userName": "test-hr",
+    "password": "45622",
+    "userFullName": "test HR"
   }
 }

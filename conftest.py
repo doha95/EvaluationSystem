@@ -1,5 +1,7 @@
 import pytest
 from selenium import webdriver
+
+from pageObject.HrManagement import HrManagement
 from pageObject.LoginPage import LoginPage
 import json
 from utills.Contants import CredentialKeysEnum
@@ -43,8 +45,16 @@ def employee_credentials(config):
         print(f"An error occurred while reading the JSON file: {error}")
 
 
+@pytest.fixture(scope="session")
+def hr_credentials(config):
+    try:
+        return config["hr_credentials"]
+    except Exception as error:
+        print(f"An error occurred while reading the JSON file: {error}")
+
+
 # TODO: handle how we should manage scope the driver
-@pytest.fixture#(scope="module")
+@pytest.fixture  # (scope="module")
 def driver():
     # TODO: handle to create it in singleton
     sizes = [(320, 480), (768, 1024), (1440, 900)]  # Different screen sizes to test
@@ -53,6 +63,21 @@ def driver():
     web_driver.maximize_window()
     yield web_driver
     web_driver.quit()
+
+
+# @pytest.fixture(scope="session", autouse=True)
+# def setup_teardown(driver, login_with_hr, employee_credentials):
+#     # TODO: handle screen sizes here?
+#     # Setup code before each session
+#     print("Setup code before each session")
+#     hr_ManagementPage = HrManagement(driver=driver)
+#     hr_ManagementPage.openManageEvaluationForEmployeeName(employee_credentials[CredentialKeysEnum.USER_FULL_NAME.value])
+#
+#     # This runs before the test session
+#     yield
+#
+#     # Teardown code after each session
+#     print("Teardown code after each session")
 
 
 @pytest.fixture
@@ -68,4 +93,12 @@ def login_with_supervisor(driver, base_url, supervisor_credentials):
     login_page = LoginPage(driver=driver)
     user_name = supervisor_credentials[CredentialKeysEnum.USER_NAME.value]
     password = supervisor_credentials[CredentialKeysEnum.PASSWORD.value]
+    login_page.login_with_userName_and_password(base_url, user_name, password)
+
+
+@pytest.fixture  # (scope="session")
+def login_with_hr(driver, base_url, hr_credentials):
+    login_page = LoginPage(driver=driver)
+    user_name = hr_credentials[CredentialKeysEnum.USER_NAME.value]
+    password = hr_credentials[CredentialKeysEnum.PASSWORD.value]
     login_page.login_with_userName_and_password(base_url, user_name, password)

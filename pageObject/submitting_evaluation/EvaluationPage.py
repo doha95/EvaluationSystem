@@ -41,41 +41,41 @@ class EvaluationPage(BaseModule):
     __confirm_close_evaluation_button_locator = (By.ID, "save")
     __cancel_close_evaluation_button_locator = (By.ID, "close")
 
-    def check_my_history_page_is_loaded(self):
+    def check_my_evaluation_page_is_loaded(self):
         try:
             title = self.wait_for(self.__page_title_locator).text
             return title == self.__PAGE_TITLE
         except TimeoutException:
             return False
 
-    def fill_evaluation_table(self, selectedRatingIndex=0):
+    def fill_evaluation_table(self, evaluation_selections_IDs):
+        # TODO: handle dublicate with the next function
         try:
             table = self.wait_for(self.__evaluation_table_locator)
             rows = table.find_elements(By.TAG_NAME, "tr")
-            rows_count = len(rows)
-            for row in rows:
+            for index, row in enumerate(rows):
                 # Get the cells that have only checkbox input
-                cells = row.find_elements(By.TAG_NAME, "td")[1:rows_count - 2]
-                if selectedRatingIndex < 0 or selectedRatingIndex > len(cells):
-                    raise Exception("the selected rating index is out of range of the evaluation table")
-                selected_cell = cells[selectedRatingIndex]
-                checkbox = selected_cell.find_element(By.TAG_NAME, "input")
-                checkbox.click()
+                selected_item = row.find_element(By.ID, evaluation_selections_IDs[index])
+                # check if this element had not been checked before
+                if not selected_item.is_selected():
+                    selected_item.click()
         except (TimeoutException, NoSuchElementException):
             return None
 
-    # TODO: handle it in better way to fill the table, maybe to fill with out index
-    # this is dummy way to check
-    def is_evaluation_saved(self):
+    def is_evaluation_table_saved(self, evaluation_selections_IDs):
+        # TODO: handle dublicate here !!
         try:
-            status_image_element = self.wait_for(self.__evaluation_status_image_locator)
-            image_src = status_image_element.get_attribute("src")
-            if "/img/starteval.gif" in image_src:
-                return True
-            else:
-                return False
+            table = self.wait_for(self.__evaluation_table_locator)
+            rows = table.find_elements(By.TAG_NAME, "tr")
+            for index, row in enumerate(rows):
+                # Get the cells that have only checkbox input
+                selected_item = row.find_element(By.ID, evaluation_selections_IDs[index])
+                # check if this element had not been checked before
+                if not selected_item.is_selected():
+                    return False
+            return True
         except (TimeoutException, NoSuchElementException):
-            return False
+            return None
 
     def click_save_button(self):
         try:
